@@ -1,0 +1,207 @@
+export component Sidebar inherits Rectangle {
+    width: 208px;
+    height: 500px;
+    background: #1a1c1fff;
+    clip: true;
+
+    in-out property <string> active-tab: "Projects";
+
+    logo-area := Rectangle {
+        width: 208px;
+        height: 52px;
+        x: 0px;
+        y: 8px;
+
+        logo-wrapper := Rectangle {
+            width: 208px;
+            height: 52px;
+            x: 0px;
+            y: 0px;
+            clip: true;
+
+            vector-logo := Rectangle {
+                width: 81px;
+                height: 43px;
+                x: 0px;
+                y: 6px;
+                Image {
+                    width: 100%;
+                    height: 100%;
+                    source: @image-url("../images/f39cb06cf2484a57ef6bcae92f1c9626284ae6ca");
+                    image-fit: contain;
+                }
+            }
+
+            app-title := Text {
+                width: 35px;
+                height: 19px;
+                x: 78px;
+                y: 9px;
+                text: "VEAL";
+                font-family: "Segoe UI";
+                font-size: 14px;
+                font-weight: 700;
+                horizontal-alignment: center;
+                vertical-alignment: center;
+                color: #ffffffff;
+            }
+
+            app-version := Text {
+                width: 40px;
+                height: 13px;
+                x: 81px;
+                y: 30px;
+                text: "2026.0.1";
+                font-family: "Segoe UI";
+                font-size: 10px;
+                font-weight: 300;
+                horizontal-alignment: left;
+                vertical-alignment: center;
+                color: #ffffffff;
+            }
+        }
+    }
+
+    options-wrapper := Rectangle {
+        width: 208px;
+        height: 440px;
+        x: 0px;
+        y: 60px;
+        clip: true;
+
+        navigation-menu := Rectangle {
+            width: 177px;
+            height: 120px;
+            x: 15px;
+            y: 25px;
+
+            nav-projects := Rectangle {
+                width: 177px;
+                height: 30px;
+                x: 0px;
+                y: 0px;
+                border-radius: 5px;
+                background: root.active-tab == "Projects" ? rgba(0, 71, 136, 0.5) : transparent;
+
+                TouchArea {
+                    clicked => { root.active-tab = "Projects"; }
+                }
+
+                Text {
+                    width: 49px;
+                    height: 19px;
+                    x: 15px;
+                    y: 5.5px;
+                    text: "Projects";
+                    font-family: "Segoe UI";
+                    font-size: 14px;
+                    font-weight: 400;
+                    horizontal-alignment: left;
+                    vertical-alignment: center;
+                    color: #ebf1ffff;
+                }
+            }
+
+            nav-remote-compute := Rectangle {
+                width: 177px;
+                height: 30px;
+                x: 0px;
+                y: 30px;
+                border-radius: 5px;
+                background: root.active-tab == "Remote Compute" ? rgba(0, 71, 136, 0.5) : transparent;
+
+                TouchArea {
+                    clicked => { root.active-tab = "Remote Compute"; }
+                }
+
+                Text {
+                    width: 109px;
+                    height: 19px;
+                    x: 15px;
+                    y: 5.5px;
+                    text: "Remote Compute";
+                    font-family: "Segoe UI";
+                    font-size: 14px;
+                    font-weight: 400;
+                    horizontal-alignment: left;
+                    vertical-alignment: center;
+                    color: #ebf1ffff;
+                }
+            }
+
+            nav-preferences := Rectangle {
+                width: 177px;
+                height: 30px;
+                x: 0px;
+                y: 60px;
+                border-radius: 5px;
+                background: root.active-tab == "Preferences" ? rgba(0, 71, 136, 0.5) : transparent;
+
+                TouchArea {
+                    clicked => { root.active-tab = "Preferences"; }
+                }
+
+                Text {
+                    width: 72px;
+                    height: 19px;
+                    x: 15px;
+                    y: 5.5px;
+                    text: "Preferences";
+                    font-family: "Segoe UI";
+                    font-size: 14px;
+                    font-weight: 400;
+                    horizontal-alignment: left;
+                    vertical-alignment: center;
+                    color: #ebf1ffff;
+                }
+            }
+
+            nav-documentation := Rectangle {
+                width: 177px;
+                height: 30px;
+                x: 0px;
+                y: 90px;
+                border-radius: 5px;
+                background: root.active-tab == "Documentation" ? rgba(0, 71, 136, 0.5) : transparent;
+
+                TouchArea {
+                    clicked => { root.active-tab = "Documentation"; }
+                }
+
+                Text {
+                    width: 96px;
+                    height: 19px;
+                    x: 15px;
+                    y: 5.5px;
+                    text: "Documentation";
+                    font-family: "Segoe UI";
+                    font-size: 14px;
+                    font-weight: 400;
+                    horizontal-alignment: left;
+                    vertical-alignment: center;
+                    color: #ebf1ffff;
+                }
+            }
+        }
+
+        settings-icon := Rectangle {
+            width: 15px;
+            height: 15px;
+            x: 9px;
+            y: 414px;
+            background: transparent;
+            clip: true;
+
+            Path {
+                width: 12.5625px;
+                height: 12.5px;
+                x: 1.21875px;
+                y: 1.25px;
+                commands: "M4.5625 12.5L4.3125 10.5C4.17708 10.4479 4.04948 10.3854 3.92969 10.3125C3.8099 10.2396 3.69271 10.1615 3.57812 10.0781L1.71875 10.8594L0 7.89062L1.60938 6.67188C1.59896 6.59896 1.59375 6.52865 1.59375 6.46094L1.59375 6.03906C1.59375 5.97135 1.59896 5.90104 1.60938 5.82812L0 4.60938L1.71875 1.64062L3.57812 2.42188C3.69271 2.33854 3.8125 2.26042 3.9375 2.1875C4.0625 2.11458 4.1875 2.05208 4.3125 2L4.5625 0L8 0L8.25 2C8.38542 2.05208 8.51302 2.11458 8.63281 2.1875C8.7526 2.26042 8.86979 2.33854 8.98438 2.42188L10.8438 1.64062L12.5625 4.60938L10.9531 5.82812C10.9635 5.90104 10.9688 5.97135 10.9688 6.03906L10.9688 6.46094C10.9688 6.52865 10.9583 6.59896 10.9375 6.67188L12.5469 7.89062L10.8281 10.8594L8.98438 10.0781C8.86979 10.1615 8.75 10.2396 8.625 10.3125C8.5 10.3854 8.375 10.4479 8.25 10.5L8 12.5L4.5625 12.5ZM5.65625 11.25L6.89063 11.25L7.10938 9.59375C7.43229 9.51042 7.73177 9.38802 8.00781 9.22656C8.28385 9.0651 8.53646 8.86979 8.76562 8.64062L10.3125 9.28125L10.9219 8.21875L9.57812 7.20313C9.63021 7.05729 9.66667 6.90365 9.6875 6.74219C9.70833 6.58073 9.71875 6.41667 9.71875 6.25C9.71875 6.08333 9.70833 5.91927 9.6875 5.75781C9.66667 5.59635 9.63021 5.44271 9.57812 5.29688L10.9219 4.28125L10.3125 3.21875L8.76562 3.875C8.53646 3.63542 8.28385 3.4349 8.00781 3.27344C7.73177 3.11198 7.43229 2.98958 7.10938 2.90625L6.90625 1.25L5.67188 1.25L5.45312 2.90625C5.13021 2.98958 4.83073 3.11198 4.55469 3.27344C4.27865 3.4349 4.02604 3.63021 3.79688 3.85938L2.25 3.21875L1.64062 4.28125L2.98438 5.28125C2.93229 5.4375 2.89583 5.59375 2.875 5.75C2.85417 5.90625 2.84375 6.07292 2.84375 6.25C2.84375 6.41667 2.85417 6.57813 2.875 6.73438C2.89583 6.89063 2.93229 7.04688 2.98438 7.20313L1.64062 8.21875L2.25 9.28125L3.79688 8.625C4.02604 8.86458 4.27865 9.0651 4.55469 9.22656C4.83073 9.38802 5.13021 9.51042 5.45312 9.59375L5.65625 11.25ZM6.3125 8.4375C6.91667 8.4375 7.43229 8.22396 7.85938 7.79688C8.28646 7.36979 8.5 6.85417 8.5 6.25C8.5 5.64583 8.28646 5.13021 7.85938 4.70312C7.43229 4.27604 6.91667 4.0625 6.3125 4.0625C5.69792 4.0625 5.17969 4.27604 4.75781 4.70312C4.33594 5.13021 4.125 5.64583 4.125 6.25C4.125 6.85417 4.33594 7.36979 4.75781 7.79688C5.17969 8.22396 5.69792 8.4375 6.3125 8.4375Z";
+                fill-rule: nonzero;
+                stroke-width: 0.025px;
+                fill: #ebf1ffff;
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+import { Sidebar } from "sidebar.slint";
+import { ProjectsView } from "projects-view.slint";
+
+export component EntryPage inherits Rectangle {
+    width: 1000px;
+    height: 500px;
+    background: #111316ff;
+    clip: true;
+
+    sidebar := Sidebar {
+        x: 0px;
+        y: 0px;
+    }
+
+    content-area := Rectangle {
+        width: 792px;
+        height: 500px;
+        x: 208px;
+        y: 0px;
+        clip: true;
+
+        if (sidebar.active-tab == "Projects") : projects_view := ProjectsView {
+
+        }
+        // add more views based on active tab once made...
+        // else if (sidebar.active-tab == "Preferences") : preferences_view := PreferencesView {}
+    }
+}
