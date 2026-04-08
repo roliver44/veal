@@ -17,6 +17,7 @@ component UnderConstructionView inherits Rectangle {
 }
 
 export component EntryPage inherits Rectangle {
+    callback request-file-open();
     width: 1000px;
     height: 500px;
     background: #111316ff;
@@ -35,7 +36,7 @@ export component EntryPage inherits Rectangle {
         clip: true;
 
         if (sidebar.active-tab == "Projects") : projects_view := ProjectsView {
-
+            request-file-open => { root.request-file-open(); }
         }
 
         if (sidebar.active-tab != "Projects") : under_construction_view := UnderConstructionView {
