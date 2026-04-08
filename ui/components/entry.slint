@@ -1,6 +1,21 @@
 import { Sidebar } from "sidebar.slint";
 import { ProjectsView } from "projects-view.slint";
 
+component UnderConstructionView inherits Rectangle {
+    width: 100%;
+    height: 100%;
+    Text {
+        text: "Under Construction - Coming in Future Updates";
+        color: #ebf1ffff;
+        font-family: "Segoe UI";
+        font-size: 24px;
+        horizontal-alignment: center;
+        vertical-alignment: center;
+        width: 100%;
+        height: 100%;
+    }
+}
+
 export component EntryPage inherits Rectangle {
     width: 1000px;
     height: 500px;
@@ -22,7 +37,9 @@ export component EntryPage inherits Rectangle {
         if (sidebar.active-tab == "Projects") : projects_view := ProjectsView {
 
         }
-        // add more views based on active tab once made...
-        // else if (sidebar.active-tab == "Preferences") : preferences_view := PreferencesView {}
+
+        if (sidebar.active-tab != "Projects") : under_construction_view := UnderConstructionView {
+
+        }
     }
 }
