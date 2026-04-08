@@ -2,6 +2,7 @@ import { EntryPage } from "components/entry.slint";
 
 export component App inherits Window {
     in-out property <bool> is-project-loaded: false;
+    callback request-file-open();
     title: "Welcome to Veal";
     property <image> logo: @image-url("assets/vector_logo.png");
     icon: logo;
@@ -16,8 +17,9 @@ export component App inherits Window {
     }
     */
     // if (is-project-loaded) : MainAppView {}
-    if (!is-project-loaded) : EntryPage {
+    if (!is-project-loaded) : entry-page := EntryPage {
         x: 0px;
         y: 0px;
+        request-file-open => { root.request-file-open(); }
     }
 }
