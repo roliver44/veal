@@ -1,4 +1,5 @@
 import { EntryPage } from "components/entry.slint";
+import { RecentProject } from "components/projects-view.slint";
 
 export component App inherits Window {
     in-out property <bool> is-project-loaded: false;
@@ -6,9 +7,11 @@ export component App inherits Window {
     callback request-project-create(string, string, string, string, string, string);
     callback request-select-location();
     callback request-select-dataset();
+    callback request-open-recent(string);
 
     in-out property <string> default-location: "";
     in-out property <string> initial-dataset: "";
+    in-out property <[RecentProject]> recent-projects: [];
 
     title: "Welcome to Veal";
     property <image> logo: @image-url("assets/vector_logo.png");
@@ -31,7 +34,9 @@ export component App inherits Window {
         request-project-create(pn, id, pl, tt, tm, eo) => { root.request-project-create(pn, id, pl, tt, tm, eo); }
         request-select-location => { root.request-select-location(); }
         request-select-dataset => { root.request-select-dataset(); }
+        request-open-recent(path) => { root.request-open-recent(path); }
         default-location: root.default-location;
         initial-dataset: root.initial-dataset;
+        recent-projects: root.recent-projects;
     }
 }

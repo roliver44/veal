@@ -1,5 +1,5 @@
 import { Sidebar } from "sidebar.slint";
-import { ProjectsView } from "projects-view.slint";
+import { ProjectsView, RecentProject } from "projects-view.slint";
 import { CreateProject } from "create-project.slint";
 
 component UnderConstructionView inherits Rectangle {
@@ -22,10 +22,12 @@ export component EntryPage inherits Rectangle {
     callback request-project-create(string, string, string, string, string, string);
     callback request-select-location();
     callback request-select-dataset();
+    callback request-open-recent(string);
 
     in-out property <bool> creating_project: false;
     in-out property <string> default-location: "";
     in-out property <string> initial-dataset: "";
+    in-out property <[RecentProject]> recent-projects: [];
 
     width: 1000px;
     height: 500px;
@@ -47,6 +49,8 @@ export component EntryPage inherits Rectangle {
         if (sidebar.active-tab == "Projects" && !creating_project) : projects_view := ProjectsView {
             request-file-open => { root.request-file-open(); }
             request-create-project => { root.creating_project = true; }
+            request-open-recent(path) => { root.request-open-recent(path); }
+            recent-projects: root.recent-projects;
         }
 
         if (sidebar.active-tab == "Projects" && creating_project) : create_project_view := CreateProject {

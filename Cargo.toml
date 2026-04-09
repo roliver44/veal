@@ -6,7 +6,11 @@ edition = "2024"
 [dependencies]
 slint = { version = "1.15.1", features = ["renderer-skia"] }
 rfd = "0.17.2"
-dirs = "5.0"
+dirs = "6.0.0"
+zip = "2.2.2"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
 
 [build-dependencies]
 slint-build = "1.15.1"

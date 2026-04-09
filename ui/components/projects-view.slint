@@ -1,7 +1,17 @@
+export struct RecentProject {
+    name: string,
+    last-modified: string,
+    path: string,
+}
+
 export component ProjectsView inherits Rectangle {
     callback request-file-open();
     callback request-create-project();
+    callback request-open-recent(string);
+
     in-out property <string> selected_file_path: "No file selected";
+    in-out property <[RecentProject]> recent-projects: [];
+
     width: 792px;
     height: 500px;
     clip: true;
@@ -252,36 +262,25 @@ export component ProjectsView inherits Rectangle {
                 Rectangle { width: 1px; height: 15px; x: 467px; y: 7px; background: #76777bff; }
             }
 
-            table-row-1 := Rectangle {
+            for project[index] in root.recent-projects : Rectangle {
                 width: 738px;
                 height: 30px;
                 x: 0px;
-                y: 30px;
-                background: #45474aff;
+                y: 30px + (index * 30px);
+                background: mod(index, 2) == 0 ? #45474aff : #5d5e62ff;
                 clip: true;
 
-                Text { width: 107px; height: 16px; x: 304px; y: 7px; text: "Yesterday, 10:00 AM"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
-                Text { width: 99px; height: 16px; x: 483px; y: 7px; text: "~\\Documents\\veal"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
-                Text { width: 72px; height: 16px; x: 8px; y: 7px; text: "Project Name"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
+                Text { width: 107px; height: 16px; x: 304px; y: 7px; text: project.last-modified; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
+                Text { width: 150px; height: 16px; x: 483px; y: 7px; text: project.path; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; overflow: elide; }
+                Text { width: 150px; height: 16px; x: 8px; y: 7px; text: project.name; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; overflow: elide; }
 
                 Rectangle { width: 1px; height: 15px; x: 288px; y: 8px; background: #76777bff; }
                 Rectangle { width: 1px; height: 15px; x: 467px; y: 7px; background: #76777bff; }
-            }
 
-            table-row-2 := Rectangle {
-                width: 738px;
-                height: 30px;
-                x: 0px;
-                y: 60px;
-                background: #5d5e62ff;
-                clip: true;
-
-                Text { width: 107px; height: 16px; x: 304px; y: 7px; text: "Yesterday, 10:00 AM"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
-                Text { width: 99px; height: 16px; x: 483px; y: 7px; text: "~\\Documents\\veal"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
-                Text { width: 72px; height: 16px; x: 8px; y: 7px; text: "Project Name"; font-family: "Segoe UI"; font-size: 12px; color: #ebf1ffff; horizontal-alignment: center; vertical-alignment: center; }
-
-                Rectangle { width: 1px; height: 15px; x: 288px; y: 8px; background: #76777bff; }
-                Rectangle { width: 1px; height: 15px; x: 467px; y: 7px; background: #76777bff; }
+                ta := TouchArea {
+                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    double-clicked => { root.request-open-recent(project.path); }
+                }
             }
         }
     }
