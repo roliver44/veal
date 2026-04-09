@@ -1,5 +1,6 @@
 import { Sidebar } from "sidebar.slint";
 import { ProjectsView } from "projects-view.slint";
+import { CreateProject } from "create-project.slint";
 
 component UnderConstructionView inherits Rectangle {
     width: 100%;
@@ -18,6 +19,14 @@ component UnderConstructionView inherits Rectangle {
 
 export component EntryPage inherits Rectangle {
     callback request-file-open();
+    callback request-project-create(string, string, string, string, string, string);
+    callback request-select-location();
+    callback request-select-dataset();
+
+    in-out property <bool> creating_project: false;
+    in-out property <string> default-location: "";
+    in-out property <string> initial-dataset: "";
+
     width: 1000px;
     height: 500px;
     background: #111316ff;
@@ -35,8 +44,20 @@ export component EntryPage inherits Rectangle {
         y: 0px;
         clip: true;
 
-        if (sidebar.active-tab == "Projects") : projects_view := ProjectsView {
+        if (sidebar.active-tab == "Projects" && !creating_project) : projects_view := ProjectsView {
             request-file-open => { root.request-file-open(); }
+            request-create-project => { root.creating_project = true; }
+        }
+
+        if (sidebar.active-tab == "Projects" && creating_project) : create_project_view := CreateProject {
+            request-back => { root.creating_project = false; }
+            request-create(project_name, initial_dataset, project_location, target_text, threat_model, experiment_objective) => {
+                root.request-project-create(project_name, initial_dataset, project_location, target_text, threat_model, experiment_objective);
+            }
+            request-select-location => { root.request-select-location(); }
+            request-select-dataset => { root.request-select-dataset(); }
+            default-location: root.default-location;
+            initial-dataset: root.initial-dataset;
         }
 
         if (sidebar.active-tab != "Projects") : under_construction_view := UnderConstructionView {

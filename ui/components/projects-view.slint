@@ -1,5 +1,6 @@
 export component ProjectsView inherits Rectangle {
     callback request-file-open();
+    callback request-create-project();
     in-out property <string> selected_file_path: "No file selected";
     width: 792px;
     height: 500px;
@@ -88,6 +89,10 @@ export component ProjectsView inherits Rectangle {
                     color: #ebf1ffff;
                     wrap: word-wrap;
                 }
+            }
+            TouchArea {
+                mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                clicked => { root.request-create-project() }
             }
         }
 

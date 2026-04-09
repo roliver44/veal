@@ -3,6 +3,13 @@ import { EntryPage } from "components/entry.slint";
 export component App inherits Window {
     in-out property <bool> is-project-loaded: false;
     callback request-file-open();
+    callback request-project-create(string, string, string, string, string, string);
+    callback request-select-location();
+    callback request-select-dataset();
+
+    in-out property <string> default-location: "";
+    in-out property <string> initial-dataset: "";
+
     title: "Welcome to Veal";
     property <image> logo: @image-url("assets/vector_logo.png");
     icon: logo;
@@ -21,5 +28,10 @@ export component App inherits Window {
         x: 0px;
         y: 0px;
         request-file-open => { root.request-file-open(); }
+        request-project-create(pn, id, pl, tt, tm, eo) => { root.request-project-create(pn, id, pl, tt, tm, eo); }
+        request-select-location => { root.request-select-location(); }
+        request-select-dataset => { root.request-select-dataset(); }
+        default-location: root.default-location;
+        initial-dataset: root.initial-dataset;
     }
 }

@@ -1,0 +1,77 @@
+export component CustomDropdown inherits Rectangle {
+    in-out property <[string]> options: [];
+    in-out property <string> selected-option: "";
+    in-out property <bool> is-open: false;
+
+    width: 350px;
+    height: 35px;
+    background: #1a1c1fff;
+    border-radius: 5px;
+    border-width: 1px;
+    border-color: #45474aff;
+    z: 100;
+
+    Text {
+        x: 10px;
+        y: 0px;
+        width: 310px;
+        height: 35px;
+        text: root.selected-option;
+        font-family: "Segoe UI";
+        font-size: 14px;
+        color: #ebf1ffff;
+        vertical-alignment: center;
+    }
+
+    Path {
+        width: 10px;
+        height: 5px;
+        x: 325px;
+        y: 15px;
+        commands: "M 0 0 L 10 0 L 5 5 Z";
+        fill: #ebf1ffff;
+    }
+
+    TouchArea {
+        mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+        clicked => { root.is-open = !root.is-open; }
+    }
+
+    if (root.is-open) : Rectangle {
+        y: 40px;
+        width: 350px;
+        height: root.options.length * 35px;
+        background: #1a1c1fff;
+        border-radius: 5px;
+        border-width: 1px;
+        border-color: #45474aff;
+        z: 101;
+        clip: true;
+
+        for option[index] in root.options : Rectangle {
+            y: index * 35px;
+            width: 350px;
+            height: 35px;
+            background: ta.has-hover ? #45474aff : transparent;
+
+            Text {
+                x: 10px;
+                width: 330px;
+                height: 35px;
+                text: option;
+                font-family: "Segoe UI";
+                font-size: 14px;
+                color: #ebf1ffff;
+                vertical-alignment: center;
+            }
+            
+            ta := TouchArea {
+                mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                clicked => {
+                    root.selected-option = option;
+                    root.is-open = false;
+                }
+            }
+        }
+    }
+}

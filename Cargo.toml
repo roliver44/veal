@@ -5,8 +5,8 @@ edition = "2024"
 
 [dependencies]
 slint = { version = "1.15.1", features = ["renderer-skia"] }
-native-dialog = "0.9.6"
 rfd = "0.17.2"
+dirs = "5.0"
 
 [build-dependencies]
 slint-build = "1.15.1"
