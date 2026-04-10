@@ -26,6 +26,18 @@ fn extract_to_temp(archive_path: &Path, internal_path: &str) -> Option<PathBuf> 
     Some(temp_path)
 }
 
+fn reset_dataset_ui_state(ui: &App, shared_dataset: &Rc<RefCell<Option<VectorData>>>) {
+    ui.set_global_vector_count(0);
+    ui.set_global_vector_dimension(0);
+    ui.set_global_min_val(SharedString::from("0.0000"));
+    ui.set_global_max_val(SharedString::from("0.0000"));
+    ui.set_global_mean_val(SharedString::from("0.0000"));
+    ui.set_global_frobenius_norm(SharedString::from("0.0000"));
+
+    *shared_dataset.borrow_mut() = None;
+    ui.set_stat_vector_index(-1);
+}
+
 fn handle_project_load(path: &Path, ui_handle: Weak<App>, shared_dataset: Rc<RefCell<Option<VectorData>>>) {
     println!("Validating project at: {:?}", path);
     match validate_and_load_project(path) {
@@ -92,29 +104,13 @@ fn handle_project_load(path: &Path, ui_handle: Weak<App>, shared_dataset: Rc<Ref
                         }
                         Err(e) => {
                             eprintln!("Failed to load vectors: {}", e);
-                            ui.set_global_vector_count(0);
-                            ui.set_global_vector_dimension(0);
-                            ui.set_global_min_val(SharedString::from("0.0000"));
-                            ui.set_global_max_val(SharedString::from("0.0000"));
-                            ui.set_global_mean_val(SharedString::from("0.0000"));
-                            ui.set_global_frobenius_norm(SharedString::from("0.0000"));
-
-                            *shared_dataset.borrow_mut() = None;
-                            ui.set_stat_vector_index(-1);
+                            reset_dataset_ui_state(&ui, &shared_dataset);
                         }
                     }
 
                 } else {
                     ui.set_active_dataset_name(SharedString::from("No Dataset Loaded"));
-                    ui.set_global_vector_count(0);
-                    ui.set_global_vector_dimension(0);
-                    ui.set_global_min_val(SharedString::from("0.0000"));
-                    ui.set_global_max_val(SharedString::from("0.0000"));
-                    ui.set_global_mean_val(SharedString::from("0.0000"));
-                    ui.set_global_frobenius_norm(SharedString::from("0.0000"));
-
-                    *shared_dataset.borrow_mut() = None;
-                    ui.set_stat_vector_index(-1);
+                    reset_dataset_ui_state(&ui, &shared_dataset);
                 }
 
                 ui.set_is_project_loaded(true);
