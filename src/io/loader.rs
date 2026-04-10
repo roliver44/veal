@@ -50,10 +50,10 @@ pub fn validate_and_load_project(path: &Path) -> Result<ProjectConfig, ProjectLo
 
     if let Some(ext) = path.extension() {
         if ext != "veal" && ext != "zip" {
-            return Err(ProjectLoadError::InvalidFormat("File must have a .veal or .zip extension.".to_string()));
+            return Err(ProjectLoadError::InvalidFormat("File must have a .veal or .zip extension.".into()));
         }
     } else {
-        return Err(ProjectLoadError::InvalidFormat("File has no extension.".to_string()));
+        return Err(ProjectLoadError::InvalidFormat("File has no extension.".into()));
     }
 
     // Open as Zip Archive

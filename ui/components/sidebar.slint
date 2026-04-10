@@ -84,7 +84,7 @@ export component Sidebar inherits Rectangle {
                 background: root.active-tab == "Projects" ? rgba(0, 71, 136, 0.5) : transparent;
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.active-tab = "Projects"; }
                 }
 
@@ -112,7 +112,7 @@ export component Sidebar inherits Rectangle {
                 background: root.active-tab == "Remote Compute" ? rgba(0, 71, 136, 0.5) : transparent;
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.active-tab = "Remote Compute"; }
                 }
 
@@ -140,7 +140,7 @@ export component Sidebar inherits Rectangle {
                 background: root.active-tab == "Preferences" ? rgba(0, 71, 136, 0.5) : transparent;
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.active-tab = "Preferences"; }
                 }
 
@@ -168,7 +168,7 @@ export component Sidebar inherits Rectangle {
                 background: root.active-tab == "Documentation" ? rgba(0, 71, 136, 0.5) : transparent;
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.active-tab = "Documentation"; }
                 }
 

@@ -1,5 +1,6 @@
 import { EntryPage } from "components/entry.slint";
 import { RecentProject } from "components/projects-view.slint";
+import { MainAppView } from "components/main-app-view.slint";
 
 export component App inherits Window {
     in-out property <bool> is-project-loaded: false;
@@ -8,28 +9,73 @@ export component App inherits Window {
     callback request-select-location();
     callback request-select-dataset();
     callback request-open-recent(string);
+    callback request-vector-stats(int);
 
     in-out property <string> default-location: "";
     in-out property <string> initial-dataset: "";
     in-out property <[RecentProject]> recent-projects: [];
 
+    // Project View Properties
+    in-out property <string> active-project-name: "";
+    in-out property <string> active-dataset-name: "No Dataset Loaded";
+
+    // Matrix Stats
+    in-out property <int> global-vector-count: 0;
+    in-out property <int> global-vector-dimension: 0;
+    in-out property <string> global-min-val: "0.0000";
+    in-out property <string> global-max-val: "0.0000";
+    in-out property <string> global-mean-val: "0.0000";
+    in-out property <string> global-frobenius-norm: "0.0000";
+
+    // Selected Vector Stats
+    in-out property <int> stat-vector-index: -1;
+    in-out property <int> stat-vector-dimension: 0;
+    in-out property <string> stat-min-val: "0.0000";
+    in-out property <string> stat-max-val: "0.0000";
+    in-out property <string> stat-mean-val: "0.0000";
+    in-out property <string> stat-l2-norm: "0.0000";
+    in-out property <bool> stat-is-normalized: false;
+
     title: "Welcome to Veal";
     property <image> logo: @image-url("assets/vector_logo.png");
     icon: logo;
     background: #1e1e1eff;
-    width: 1000px;
-    height: 500px;
-    /*
-    MenuBar {
-        Menu {
-            title: @tr("File");
+
+    // Set initial size
+    preferred-width: 1000px;
+    preferred-height: 500px;
+
+    MainAppView {
+        visible: root.is-project-loaded;
+        width: 100%;
+        height: 100%;
+        project-name: root.active-project-name;
+        dataset-name: root.active-dataset-name;
+
+        global-vector-count: root.global-vector-count;
+        global-vector-dimension: root.global-vector-dimension;
+        global-min-val: root.global-min-val;
+        global-max-val: root.global-max-val;
+        global-mean-val: root.global-mean-val;
+        global-frobenius-norm: root.global-frobenius-norm;
+
+        stat-vector-index: root.stat-vector-index;
+        stat-vector-dimension: root.stat-vector-dimension;
+        stat-min-val: root.stat-min-val;
+        stat-max-val: root.stat-max-val;
+        stat-mean-val: root.stat-mean-val;
+        stat-l2-norm: root.stat-l2-norm;
+        stat-is-normalized: root.stat-is-normalized;
+
+        request-vector-stats(index) => {
+            root.request-vector-stats(index);
         }
     }
-    */
-    // if (is-project-loaded) : MainAppView {}
-    if (!is-project-loaded) : entry-page := EntryPage {
-        x: 0px;
-        y: 0px;
+
+    EntryPage {
+        visible: !root.is-project-loaded;
+        width: 100%;
+        height: 100%;
         request-file-open => { root.request-file-open(); }
         request-project-create(pn, id, pl, tt, tm, eo) => { root.request-project-create(pn, id, pl, tt, tm, eo); }
         request-select-location => { root.request-select-location(); }

@@ -29,24 +29,27 @@ export component EntryPage inherits Rectangle {
     in-out property <string> initial-dataset: "";
     in-out property <[RecentProject]> recent-projects: [];
 
-    width: 1000px;
-    height: 500px;
+    width: 100%;
+    height: 100%;
     background: #111316ff;
     clip: true;
 
     sidebar := Sidebar {
         x: 0px;
         y: 0px;
+        height: 100%;
     }
 
     content-area := Rectangle {
-        width: 792px;
-        height: 500px;
+        width: parent.width - 208px;
+        height: 100%;
         x: 208px;
         y: 0px;
         clip: true;
 
         if (sidebar.active-tab == "Projects" && !creating_project) : projects_view := ProjectsView {
+            width: 100%;
+            height: 100%;
             request-file-open => { root.request-file-open(); }
             request-create-project => { root.creating_project = true; }
             request-open-recent(path) => { root.request-open-recent(path); }
@@ -54,6 +57,8 @@ export component EntryPage inherits Rectangle {
         }
 
         if (sidebar.active-tab == "Projects" && creating_project) : create_project_view := CreateProject {
+            width: 100%;
+            height: 100%;
             request-back => { root.creating_project = false; }
             request-create(project_name, initial_dataset, project_location, target_text, threat_model, experiment_objective) => {
                 root.request-project-create(project_name, initial_dataset, project_location, target_text, threat_model, experiment_objective);

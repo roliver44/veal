@@ -31,7 +31,7 @@ export component CreateProject inherits Rectangle {
         }
 
         TouchArea {
-            mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+            mouse-cursor: pointer;
             clicked => { root.request-back() }
         }
     }
@@ -135,7 +135,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.request-select-location() }
                 }
             }
@@ -145,7 +145,7 @@ export component CreateProject inherits Rectangle {
         Text {
             x: 0px;
             y: 80px;
-            text: "Vector Dataset (.csv, .json)";
+            text: "Vector Dataset (.npy, .json)";
             font-family: "Segoe UI";
             font-size: 14px;
             color: #ebf1ffff;
@@ -189,7 +189,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.request-select-dataset() }
                 }
             }
@@ -246,7 +246,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.experiment-objective = "Retrieval Leakage"; }
                 }
             }
@@ -271,7 +271,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.experiment-objective = "Filter Evasion"; }
                 }
             }
@@ -331,7 +331,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.threat-model = "Known Model"; }
                 }
             }
@@ -356,7 +356,7 @@ export component CreateProject inherits Rectangle {
                 }
 
                 TouchArea {
-                    mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                    mouse-cursor: pointer;
                     clicked => { root.threat-model = "Unknown Model"; }
                 }
             }
@@ -410,7 +410,7 @@ export component CreateProject inherits Rectangle {
         // Create Button
         create-btn := Rectangle {
             x: 0px;
-            y: 255px; // Aligned with the bottom of the paragraph box (185px + 110px = 295px; 295px - 40px height = 255px)
+            y: 255px;
             width: 150px;
             height: 40px;
             background: rgba(0, 71, 136, 1.0);
@@ -429,7 +429,7 @@ export component CreateProject inherits Rectangle {
             }
 
             TouchArea {
-                mouse-cursor: self.has-hover ? MouseCursor.pointer : MouseCursor.default;
+                mouse-cursor: pointer;
                 clicked => {
                     root.request-create(
                         project-name-input.text,

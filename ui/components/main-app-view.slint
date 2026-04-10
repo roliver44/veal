@@ -1,0 +1,215 @@
+import { ScrollView } from "std-widgets.slint";
+
+export component MainAppView inherits Rectangle {
+    in-out property <string> project-name: "Unnamed Project";
+    in-out property <string> dataset-name: "No Dataset Loaded";
+
+    // Matrix Stats
+    in-out property <int> global-vector-count: 0;
+    in-out property <int> global-vector-dimension: 0;
+    in-out property <string> global-min-val: "0.0000";
+    in-out property <string> global-max-val: "0.0000";
+    in-out property <string> global-mean-val: "0.0000";
+    in-out property <string> global-frobenius-norm: "0.0000";
+
+    // Selected Vector Stats
+    in-out property <int> stat-vector-index: -1;
+    in-out property <int> stat-vector-dimension: 0;
+    in-out property <string> stat-min-val: "0.0000";
+    in-out property <string> stat-max-val: "0.0000";
+    in-out property <string> stat-mean-val: "0.0000";
+    in-out property <string> stat-l2-norm: "0.0000";
+    in-out property <bool> stat-is-normalized: false;
+
+    callback request-vector-stats(int);
+
+    background: #111316ff;
+
+    HorizontalLayout {
+        padding: 40px;
+        spacing: 40px;
+
+        // Left Column
+        VerticalLayout {
+            width: 40%;
+            spacing: 20px;
+
+            Text {
+                text: "Veal: " + root.project-name;
+                font-family: "Segoe UI";
+                font-size: 28px;
+                font-weight: 700;
+                color: #ffffffff;
+                vertical-stretch: 0;
+            }
+
+            Text {
+                text: "Dataset: " + root.dataset-name;
+                font-family: "Segoe UI";
+                font-size: 16px;
+                color: #ebf1ffff;
+                opacity: 0.8;
+                vertical-stretch: 0;
+            }
+
+            Rectangle { height: 1px; background: #45474aff; vertical-stretch: 0; }
+
+            Text {
+                text: "Matrix Summary";
+                font-family: "Segoe UI";
+                font-size: 20px;
+                font-weight: 600;
+                color: #ebf1ffff;
+                vertical-stretch: 0;
+            }
+
+            Rectangle {
+                background: #1a1c1fff;
+                border-radius: 8px;
+                border-width: 1px;
+                border-color: #45474aff;
+                vertical-stretch: 0;
+
+                VerticalLayout {
+                    spacing: 10px;
+                    padding: 15px;
+
+                    HorizontalLayout { spacing: 10px; Text { text: "Total Vectors:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-vector-count; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                    HorizontalLayout { spacing: 10px; Text { text: "Dimension:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-vector-dimension; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                    HorizontalLayout { spacing: 10px; Text { text: "Global Min:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-min-val; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                    HorizontalLayout { spacing: 10px; Text { text: "Global Max:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-max-val; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                    HorizontalLayout { spacing: 10px; Text { text: "Global Mean:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-mean-val; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                    HorizontalLayout { spacing: 10px; Text { text: "Frobenius Norm:"; font-family: "Segoe UI"; font-size: 14px; color: #ebf1ffff; width: 140px; font-weight: 600; } Text { text: root.global-frobenius-norm; font-family: "Courier New"; font-size: 14px; color: #ebf1ffff; } }
+                }
+            }
+
+            Text {
+                text: "Vectors List";
+                font-family: "Segoe UI";
+                font-size: 20px;
+                font-weight: 600;
+                color: #ebf1ffff;
+                vertical-stretch: 0;
+            }
+
+            Rectangle {
+                background: #1a1c1fff;
+                border-radius: 8px;
+                border-width: 1px;
+                border-color: #45474aff;
+                clip: true;
+                vertical-stretch: 1;
+
+                ScrollView {
+                    width: 100%;
+                    height: 100%;
+
+                    VerticalLayout {
+                        padding: 5px;
+                        spacing: 2px;
+
+                        for index in root.global-vector-count : Rectangle {
+                            height: 35px;
+                            border-radius: 4px;
+                            background: root.stat-vector-index == index ? rgba(0, 71, 136, 0.8) : (touch.has-hover ? #2a2c2fff : transparent);
+
+                            Text {
+                                x: 15px;
+                                text: "Vector " + index;
+                                color: #ebf1ffff;
+                                font-family: "Segoe UI";
+                                font-size: 14px;
+                                vertical-alignment: center;
+                            }
+
+                            touch := TouchArea {
+                                mouse-cursor: pointer;
+                                clicked => {
+                                    root.stat-vector-index = index;
+                                    root.request-vector-stats(index);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Right Column
+        VerticalLayout {
+            width: 60%;
+            spacing: 20px;
+            alignment: start;
+
+            Text {
+                text: root.stat-vector-index >= 0 ? "Vector " + root.stat-vector-index + " Statistics" : "Select a vector to view statistics";
+                font-family: "Segoe UI";
+                font-size: 20px;
+                font-weight: 600;
+                color: #ebf1ffff;
+            }
+
+            if (root.stat-vector-index >= 0) : Rectangle {
+                background: #1a1c1fff;
+                border-radius: 8px;
+                border-width: 1px;
+                border-color: #45474aff;
+
+                VerticalLayout {
+                    spacing: 15px;
+                    padding: 20px;
+
+                    HorizontalLayout {
+                        spacing: 20px;
+                        Text { text: "Vector Dimension:"; font-family: "Segoe UI"; font-size: 16px; color: #ebf1ffff; width: 150px; font-weight: 600; }
+                        Text { text: root.stat-vector-dimension; font-family: "Courier New"; font-size: 16px; color: #ebf1ffff; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 20px;
+                        Text { text: "Minimum Value:"; font-family: "Segoe UI"; font-size: 16px; color: #ebf1ffff; width: 150px; font-weight: 600; }
+                        Text { text: root.stat-min-val; font-family: "Courier New"; font-size: 16px; color: #ebf1ffff; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 20px;
+                        Text { text: "Maximum Value:"; font-family: "Segoe UI"; font-size: 16px; color: #ebf1ffff; width: 150px; font-weight: 600; }
+                        Text { text: root.stat-max-val; font-family: "Courier New"; font-size: 16px; color: #ebf1ffff; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 20px;
+                        Text { text: "Mean Value:"; font-family: "Segoe UI"; font-size: 16px; color: #ebf1ffff; width: 150px; font-weight: 600; }
+                        Text { text: root.stat-mean-val; font-family: "Courier New"; font-size: 16px; color: #ebf1ffff; }
+                    }
+
+                    HorizontalLayout {
+                        spacing: 20px;
+                        alignment: start;
+                        Text { text: "L2 Norm:"; font-family: "Segoe UI"; font-size: 16px; color: #ebf1ffff; width: 150px; font-weight: 600; }
+                        Text { text: root.stat-l2-norm; font-family: "Courier New"; font-size: 16px; color: #ebf1ffff; }
+
+                        HorizontalLayout {
+                            Rectangle {
+                                background: root.stat-is-normalized ? #2e7d32ff : #b26a00ff;
+                                border-radius: 4px;
+                                height: 20px;
+                                width: root.stat-is-normalized ? 85px : 100px;
+
+                                Text {
+                                    text: root.stat-is-normalized ? "(Normalized)" : "(Unnormalized)";
+                                    color: #ffffffff;
+                                    font-size: 12px;
+                                    font-family: "Segoe UI";
+                                    font-weight: 600;
+                                    horizontal-alignment: center;
+                                    vertical-alignment: center;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
